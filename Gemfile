@@ -41,7 +41,7 @@ gem "bootsnap", require: false
 
 group :development, :test do
   gem 'rubocop', require: false
-  gem "sqlite3", ">= 1.4"
+  gem "sqlite3", "~> 1.4"
 
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', '~> 1.11', '>= 1.11.1', platforms: %i[ mri windows ]
@@ -59,6 +59,7 @@ group :development do
 end
 
 group :test do
+  gem "minitest", "~> 5.0"
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"

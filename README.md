@@ -1,5 +1,9 @@
 # CHIP 5.3: Rails Intro: add features to RottenPotatoes
 
+Completed: rating filters, title/release-date sorting, and session preferences.
+Live app: https://rottenpotatoes-dotdevn.onrender.com
+See [deployment and submission notes](DEPLOYMENT.md).
+
 ## Introduction
 
 In this CHIP you will add a feature to an existing simple Rails app and deploy the result publicly on the Heroku 
