@@ -8,7 +8,9 @@ class MoviesController < ApplicationController
     selected_ratings = requested_ratings.is_a?(ActionController::Parameters) ? requested_ratings.keys.map(&:upcase) : []
     @ratings_to_show = @all_ratings & selected_ratings
     @ratings_to_show = @all_ratings if @ratings_to_show.empty?
-    @movies = Movie.with_ratings(@ratings_to_show)
+    @sort_by = Movie::SORT_COLUMNS.include?(params[:sort_by]) ? params[:sort_by] : "title"
+    @ratings_for_links = @ratings_to_show.index_with { "1" }
+    @movies = Movie.with_ratings(@ratings_to_show).sorted_by(@sort_by)
   end
 
   # GET /movies/1 or /movies/1.json
