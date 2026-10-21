@@ -4,11 +4,20 @@ class MoviesController < ApplicationController
   # GET /movies or /movies.json
   def index
     @all_ratings = Movie.all_ratings
-    requested_ratings = params[:ratings]
-    selected_ratings = requested_ratings.is_a?(ActionController::Parameters) ? requested_ratings.keys.map(&:upcase) : []
+    # A submitted form with no checked boxes means all ratings, whereas a plain
+    # visit to /movies restores this browser's previous choices.
+    if params.key?(:ratings) || params[:filter_submitted] == "1" || params[:commit] == "Refresh"
+      requested_ratings = params[:ratings]
+      selected_ratings = requested_ratings.is_a?(ActionController::Parameters) ? requested_ratings.keys.map(&:upcase) : []
+    else
+      selected_ratings = Array(session[:ratings])
+    end
     @ratings_to_show = @all_ratings & selected_ratings
     @ratings_to_show = @all_ratings if @ratings_to_show.empty?
-    @sort_by = Movie::SORT_COLUMNS.include?(params[:sort_by]) ? params[:sort_by] : "title"
+    requested_sort = params.key?(:sort_by) ? params[:sort_by] : session[:sort_by]
+    @sort_by = Movie::SORT_COLUMNS.include?(requested_sort) ? requested_sort : "title"
+    session[:ratings] = @ratings_to_show
+    session[:sort_by] = @sort_by
     @ratings_for_links = @ratings_to_show.index_with { "1" }
     @movies = Movie.with_ratings(@ratings_to_show).sorted_by(@sort_by)
   end
